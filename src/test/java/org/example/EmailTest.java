@@ -36,7 +36,7 @@ public class EmailTest {
 
     @Test
     public void loginTest() {
-        loginPage.inputLogin("hotabsc");
+        loginPage.inputLogin("my_login");
         loginPage.clickLoginButton();
         loginPage.passwordField("my_pass");
         loginPage.clickLoginButton();

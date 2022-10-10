@@ -9,20 +9,16 @@ public class LoginPage {
 
     public WebDriver driver;
     public LoginPage(WebDriver driver) {
-        // Для того, чтобы аннотация @FindBy заработала
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
 
-    // кнопка "войти"
     @FindBy(xpath = "//*[@id=\"passp-field-login\"]")
     private WebElement loginField;
 
-    // кнопка "выйти"
     @FindBy(xpath = "//*[@id=\"passp:sign-in\"]")
     private WebElement loginButton;
 
-    // поле вести пароль
     @FindBy(xpath = "//*[@id=\"passp-field-passwd\"]")
     private WebElement passwordField;
 
@@ -30,7 +26,7 @@ public class LoginPage {
         loginField.sendKeys(login);
     }
 
-    public void passwordField(String password) {
+    public void inputPassword(String password) {
         passwordField.sendKeys(password);
     }
 

@@ -23,11 +23,11 @@ public class EmailTest {
 
     @BeforeClass
     public static void setup() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Selenium\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", ConfProperties.getProperty("chromedriver"));
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-        driver.get("https://passport.yandex.ru/auth/");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.get(ConfProperties.getProperty("startPage"));
 
         loginPage = new LoginPage(driver);
         profilePage = new ProfilePage(driver);
@@ -35,35 +35,33 @@ public class EmailTest {
     }
 
     @Test
-    public void loginTest() {
-        loginPage.inputLogin("my_login");
+    public void emailTest() {
+        loginPage.inputLogin(ConfProperties.getProperty("login"));
         loginPage.clickLoginButton();
-        loginPage.passwordField("my_pass");
+        loginPage.inputPassword(ConfProperties.getProperty("password"));
         loginPage.clickLoginButton();
 
-        profilePage.entryMenu();
-        String login = profilePage.getUsernameLabel();
-        System.out.println(login);
-        // проверяем авторизовались ли
-        Assert.assertEquals("my_login", login);
+        profilePage.clickMenuButton();
+        String login = profilePage.getUsernameField();
+        Assert.assertEquals(ConfProperties.getProperty("login"), login);
 
         profilePage.clickEmailsButton();
-        int number = emailPage.emailsField(15, SIMBIRSOFT_TITLE);
-        System.out.println(number);
 
+        emailPage.searchMessagesByTopicInInbox(ConfProperties.getProperty("topic"));
+        emailPage.clickSearchButton();
+        String countMessages = emailPage.getCountFoundMessagesField();
         emailPage.clickNewMessageButton();
-        emailPage.inputAddressReceiver("my_login@yandex.ru");
-        emailPage.inputTopic(SIMBIRSOFT_TITLE + " " + "Nurtdinov");
-        emailPage.inputText(String.valueOf(number));
-        emailPage.sendButton();
+        emailPage.inputAddressReceiver(ConfProperties.getProperty("login") + "@yandex.ru");
+        emailPage.inputTopicNewMessage(ConfProperties.getProperty("topic") + " Nurtdinov");
+        emailPage.inputMessageText(countMessages);
+        emailPage.clickSendButton();
     }
 
     @AfterClass
     public static void logout() {
-        emailPage.entryMenu();
-        // unexpected alert open: {Alert text : }
-        // emailPage.userLogout();
-        driver.close();
+        emailPage.clickUserMenu();
+        emailPage.clickLogoutButton();
+        driver.quit();
     }
 
 }

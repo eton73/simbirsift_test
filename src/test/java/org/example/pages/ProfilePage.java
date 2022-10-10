@@ -1,6 +1,5 @@
 package org.example.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -18,33 +17,27 @@ public class ProfilePage {
         this.driver = driver;
     }
 
-    // поле названия логина
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div[3]/main/div/div/div/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div[2]/div")
-    private WebElement usernameLabel;
+    @FindBy(xpath = "//*[@class=\"personal-info-login__text personal-info-login__text_decorated\"]")
+    private WebElement usernameField;
 
-    // кнопка пользовательского меню
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div[1]/header/div[2]/div[2]/div/div")
-    private WebElement userMenu;
+    @FindBy(xpath = "//*[@class=\"user-pic user-pic_has-plus_ user-account__pic\"]")
+    private WebElement userMenuButton;
 
-    // кнопка "выйти"
-    @FindBy(xpath = "//*[@id=\"root\"]/div/div[2]/div[1]/header/div[2]/div[2]/div/div/div/ul/ul/li[1]/a")
-    private WebElement loginButton;
+    @FindBy(xpath = "//*[@class=\"menu__item menu__item_type_link legouser__menu-item legouser__menu-item_action_mail\"]")
+    private WebElement emailsButton;
 
-    // получить логин
-    public String getUsernameLabel() {
-        // ожидание, чтобы элементы успели загрузиться
+    public String getUsernameField() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div[2]/div[3]/main/div/div/div/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div[2]")));
-        String username = usernameLabel.getText();
-        return username;
+        wait.until(ExpectedConditions.visibilityOf(usernameField));
+        return usernameField.getText();
     }
 
-    public void entryMenu() {
-        userMenu.click();
+    public void clickMenuButton() {
+        userMenuButton.click();
     }
 
     public void clickEmailsButton() {
-        loginButton.click();
+        emailsButton.click();
     }
 
 }
